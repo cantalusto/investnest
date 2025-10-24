@@ -48,7 +48,7 @@ export const Plans: React.FC = () => {
 
   return (
     <section id="planos" className="relative py-20 md:py-32">
-      {/* Fundo escuro com blur */}
+      {/* Fundo escuro sem blur nas bordas */}
       <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" />
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">

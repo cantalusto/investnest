@@ -6,8 +6,13 @@ import { motion } from 'framer-motion';
 export const About: React.FC = () => {
   return (
     <section id="sobre" className="relative py-20 md:py-32">
-      {/* Fundo escuro com blur */}
-      <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" />
+      {/* Fundo escuro com blur - fade apenas no topo para transição do Hero */}
+      <div 
+        className="absolute inset-0 backdrop-blur-sm" 
+        style={{
+          background: 'linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.4) 15%, rgba(0, 0, 0, 0.4) 100%)'
+        }}
+      />
       
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <motion.div

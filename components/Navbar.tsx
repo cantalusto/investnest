@@ -120,8 +120,8 @@ export const Navbar: React.FC = () => {
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10" style={{ transform: 'translateZ(0)' }}>
         <div className="flex items-center justify-between h-20">
-          {/* Logo - sempre visível no mobile, só quando scrollado no desktop */}
-          <div className="flex items-center">
+          {/* Logo e Menu Mobile - juntos à esquerda */}
+          <div className="flex items-center gap-3">
             {/* Logo mobile - sempre visível */}
             <a
               href="#inicio"
@@ -134,8 +134,48 @@ export const Navbar: React.FC = () => {
                 width={40}
                 height={40}
                 className="w-10 h-10"
+                priority
               />
             </a>
+            
+            {/* Mobile Menu Button - ao lado da logo */}
+            <button
+              onClick={() => setIsOpen(!isOpen)}
+              className="md:hidden text-gray-300 hover:text-primary focus:outline-none relative z-50 p-2 -mr-2"
+              aria-label={isOpen ? "Fechar menu" : "Abrir menu"}
+            >
+              <div className="w-6 h-6 flex items-center justify-center">
+                {isOpen ? (
+                  <svg
+                    className="w-6 h-6"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                ) : (
+                  <svg
+                    className="w-6 h-6"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M4 6h16M4 12h16M4 18h16"
+                    />
+                  </svg>
+                )}
+              </div>
+            </button>
             
             {/* Logo desktop - só quando scrollado */}
             <a
@@ -151,6 +191,7 @@ export const Navbar: React.FC = () => {
                 width={40}
                 height={40}
                 className="w-10 h-10"
+                priority
               />
             </a>
           </div>
@@ -197,28 +238,6 @@ export const Navbar: React.FC = () => {
           >
             Login
           </a>
-
-          {/* Mobile Menu Button - Always visible */}
-          <button
-            onClick={() => setIsOpen(!isOpen)}
-            className="md:hidden text-gray-300 hover:text-primary focus:outline-none relative z-50 p-2"
-            aria-label={isOpen ? "Fechar menu" : "Abrir menu"}
-          >
-            <div className="w-6 h-5 flex flex-col justify-between">
-              <motion.span
-                animate={isOpen ? { rotate: 45, y: 8 } : { rotate: 0, y: 0 }}
-                className="w-full h-0.5 bg-current block transform origin-center transition-colors"
-              />
-              <motion.span
-                animate={isOpen ? { opacity: 0 } : { opacity: 1 }}
-                className="w-full h-0.5 bg-current block"
-              />
-              <motion.span
-                animate={isOpen ? { rotate: -45, y: -8 } : { rotate: 0, y: 0 }}
-                className="w-full h-0.5 bg-current block transform origin-center transition-colors"
-              />
-            </div>
-          </button>
         </div>
       </div>
 
@@ -230,9 +249,9 @@ export const Navbar: React.FC = () => {
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="md:hidden absolute top-full left-0 right-0 bg-black/98 backdrop-blur-lg border-t border-primary/20 shadow-2xl"
+            className="md:hidden absolute top-full left-0 right-0 bg-black/98 backdrop-blur-lg border-t border-primary/20 shadow-2xl overflow-hidden"
           >
-            <div className="px-6 py-8 space-y-2 max-w-md mx-auto">
+            <div className="px-6 py-6 space-y-1 max-w-full">
               {menuItems.map((item, index) => {
                 const isActive = activeSection === item.href.replace('#', '');
                 return (
@@ -245,22 +264,14 @@ export const Navbar: React.FC = () => {
                     }}
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: index * 0.1, duration: 0.3 }}
-                    className={`block text-lg font-medium py-4 px-4 rounded-lg cursor-pointer transition-all duration-300 ${
+                    transition={{ delay: index * 0.08, duration: 0.2 }}
+                    className={`block text-base font-medium py-3 px-4 rounded-lg cursor-pointer transition-all duration-200 ${
                       isActive 
                         ? 'text-primary bg-primary/10' 
                         : 'text-gray-300 hover:text-primary hover:bg-primary/5'
                     }`}
                   >
                     {item.name}
-                    {isActive && (
-                      <motion.div
-                        className="h-0.5 bg-primary mt-2"
-                        initial={{ width: 0 }}
-                        animate={{ width: '100%' }}
-                        transition={{ duration: 0.3 }}
-                      />
-                    )}
                   </motion.a>
                 );
               })}
@@ -272,8 +283,8 @@ export const Navbar: React.FC = () => {
                 }}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4, duration: 0.3 }}
-                className="block bg-primary text-black px-6 py-4 rounded-full font-bold text-center hover:bg-primary/90 transition-all duration-300 cursor-pointer mt-6 text-lg shadow-lg shadow-primary/20"
+                transition={{ delay: 0.3, duration: 0.2 }}
+                className="block bg-primary text-black py-2.5 rounded-full font-semibold text-center hover:bg-primary/90 transition-all duration-300 cursor-pointer mt-3 text-sm shadow-lg shadow-primary/20"
               >
                 Login
               </motion.a>
