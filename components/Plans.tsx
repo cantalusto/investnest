@@ -48,7 +48,10 @@ export const Plans: React.FC = () => {
 
   return (
     <section id="planos" className="relative py-20 md:py-32">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* Fundo escuro com blur */}
+      <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" />
+      
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}

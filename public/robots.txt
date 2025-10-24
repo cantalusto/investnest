@@ -1,0 +1,9 @@
+# Robots.txt for InvestNest
+User-agent: *
+Allow: /
+
+# Sitemaps
+Sitemap: https://investnest.com.br/sitemap.xml
+
+# Crawl-delay
+Crawl-delay: 10

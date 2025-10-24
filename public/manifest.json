@@ -1,0 +1,21 @@
+{
+  "name": "InvestNest - O seu ninho de cripto rendimento",
+  "short_name": "InvestNest",
+  "description": "Plataforma de tecnologia financeira voltada à inovação no mercado de investimentos descentralizados (DeFi)",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#18181b",
+  "theme_color": "#10f080",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/INVESTNEST - icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["finance", "business"],
+  "lang": "pt-BR",
+  "dir": "ltr"
+}

@@ -83,12 +83,7 @@ export const Navbar: React.FC = () => {
   };
 
   return (
-    <motion.nav
-      initial={{ y: -100, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.8, ease: "easeOut" }}
-      className="fixed top-0 left-0 right-0 z-50"
-    >
+    <nav className="fixed top-0 left-0 right-0 z-50">
       {/* Background com animação suave */}
       <motion.div
         className={`absolute inset-0 ${scrolled ? 'backdrop-blur-md' : ''}`}
@@ -125,49 +120,56 @@ export const Navbar: React.FC = () => {
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10" style={{ transform: 'translateZ(0)' }}>
         <div className="flex items-center justify-between h-20">
-          {/* Logo - só aparece quando scrollado */}
-          <motion.a
-            href="#inicio"
-            onClick={(e) => handleNavClick(e, '#inicio')}
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ 
-              opacity: scrolled ? 1 : 0,
-              x: scrolled ? 0 : -20,
-              pointerEvents: scrolled ? 'auto' : 'none'
-            }}
-            transition={{ 
-              duration: 0.6,
-              ease: "easeOut",
-              opacity: { duration: 0.4 }
-            }}
-            className="flex items-center space-x-2 cursor-pointer"
-          >
-            <Image
-              src="/INVESTNEST - icon.svg"
-              alt="InvestNest"
-              width={40}
-              height={40}
-              className="w-10 h-10"
-            />
-          </motion.a>
+          {/* Logo - sempre visível no mobile, só quando scrollado no desktop */}
+          <div className="flex items-center">
+            {/* Logo mobile - sempre visível */}
+            <a
+              href="#inicio"
+              onClick={(e) => handleNavClick(e, '#inicio')}
+              className="md:hidden flex items-center cursor-pointer"
+            >
+              <Image
+                src="/INVESTNEST - icon.svg"
+                alt="InvestNest"
+                width={40}
+                height={40}
+                className="w-10 h-10"
+              />
+            </a>
+            
+            {/* Logo desktop - só quando scrollado */}
+            <a
+              href="#inicio"
+              onClick={(e) => handleNavClick(e, '#inicio')}
+              className={`hidden md:flex items-center cursor-pointer transition-opacity duration-300 ${
+                scrolled ? 'opacity-100' : 'opacity-0 pointer-events-none'
+              }`}
+            >
+              <Image
+                src="/INVESTNEST - icon.svg"
+                alt="InvestNest"
+                width={40}
+                height={40}
+                className="w-10 h-10"
+              />
+            </a>
+          </div>
 
           {/* Desktop Menu - centralizado */}
           <div className="hidden md:flex items-center space-x-8 absolute left-1/2 transform -translate-x-1/2">
-            {menuItems.map((item, index) => {
+            {menuItems.map((item) => {
               const isActive = activeSection === item.href.replace('#', '');
               return (
-                <motion.a
-                  key={item.name}
-                  href={item.href}
-                  onClick={(e) => handleNavClick(e, item.href)}
-                  initial={{ opacity: 0, y: -20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1 }}
-                  className={`relative text-gray-300 hover:text-primary transition-colors duration-300 font-medium cursor-pointer ${
-                    isActive ? 'text-primary' : ''
-                  }`}
-                >
-                  {item.name}
+                <div key={item.name} className="relative">
+                  <a
+                    href={item.href}
+                    onClick={(e) => handleNavClick(e, item.href)}
+                    className={`text-gray-300 hover:text-primary transition-colors duration-300 font-medium cursor-pointer ${
+                      isActive ? 'text-primary' : ''
+                    }`}
+                  >
+                    {item.name}
+                  </a>
                   {isActive && (
                     <motion.div
                       layoutId="activeSection"
@@ -177,7 +179,7 @@ export const Navbar: React.FC = () => {
                       transition={{ duration: 0.3 }}
                     />
                   )}
-                </motion.a>
+                </div>
               );
             })}
           </div>
@@ -196,57 +198,64 @@ export const Navbar: React.FC = () => {
             Login
           </a>
 
-          {/* Mobile Menu Button */}
+          {/* Mobile Menu Button - Always visible */}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="md:hidden text-white focus:outline-none"
+            className="md:hidden text-gray-300 hover:text-primary focus:outline-none relative z-50 p-2"
+            aria-label={isOpen ? "Fechar menu" : "Abrir menu"}
           >
             <div className="w-6 h-5 flex flex-col justify-between">
               <motion.span
                 animate={isOpen ? { rotate: 45, y: 8 } : { rotate: 0, y: 0 }}
-                className="w-full h-0.5 bg-primary block"
+                className="w-full h-0.5 bg-current block transform origin-center transition-colors"
               />
               <motion.span
                 animate={isOpen ? { opacity: 0 } : { opacity: 1 }}
-                className="w-full h-0.5 bg-primary block"
+                className="w-full h-0.5 bg-current block"
               />
               <motion.span
                 animate={isOpen ? { rotate: -45, y: -8 } : { rotate: 0, y: 0 }}
-                className="w-full h-0.5 bg-primary block"
+                className="w-full h-0.5 bg-current block transform origin-center transition-colors"
               />
             </div>
           </button>
         </div>
       </div>
 
-      {/* Mobile Menu */}
+      {/* Mobile Menu - Full Screen Overlay */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-black/95 backdrop-blur-lg border-t border-primary/20"
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+            className="md:hidden absolute top-full left-0 right-0 bg-black/98 backdrop-blur-lg border-t border-primary/20 shadow-2xl"
           >
-            <div className="px-4 py-6 space-y-4">
+            <div className="px-6 py-8 space-y-2 max-w-md mx-auto">
               {menuItems.map((item, index) => {
                 const isActive = activeSection === item.href.replace('#', '');
                 return (
                   <motion.a
                     key={item.name}
                     href={item.href}
-                    onClick={(e) => handleNavClick(e, item.href)}
+                    onClick={(e) => {
+                      handleNavClick(e, item.href);
+                      setIsOpen(false);
+                    }}
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: index * 0.1 }}
-                    className={`block text-gray-300 hover:text-primary transition-colors duration-300 font-medium py-2 cursor-pointer ${
-                      isActive ? 'text-primary' : ''
+                    transition={{ delay: index * 0.1, duration: 0.3 }}
+                    className={`block text-lg font-medium py-4 px-4 rounded-lg cursor-pointer transition-all duration-300 ${
+                      isActive 
+                        ? 'text-primary bg-primary/10' 
+                        : 'text-gray-300 hover:text-primary hover:bg-primary/5'
                     }`}
                   >
                     {item.name}
                     {isActive && (
                       <motion.div
-                        className="h-0.5 bg-primary mt-1"
+                        className="h-0.5 bg-primary mt-2"
                         initial={{ width: 0 }}
                         animate={{ width: '100%' }}
                         transition={{ duration: 0.3 }}
@@ -257,11 +266,14 @@ export const Navbar: React.FC = () => {
               })}
               <motion.a
                 href="#contato"
-                onClick={(e) => handleNavClick(e, '#contato')}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.5 }}
-                className="block bg-primary text-black px-6 py-3 rounded-full font-semibold text-center hover:bg-primary/90 transition-all duration-300 cursor-pointer"
+                onClick={(e) => {
+                  handleNavClick(e, '#contato');
+                  setIsOpen(false);
+                }}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4, duration: 0.3 }}
+                className="block bg-primary text-black px-6 py-4 rounded-full font-bold text-center hover:bg-primary/90 transition-all duration-300 cursor-pointer mt-6 text-lg shadow-lg shadow-primary/20"
               >
                 Login
               </motion.a>
@@ -269,6 +281,6 @@ export const Navbar: React.FC = () => {
           </motion.div>
         )}
       </AnimatePresence>
-    </motion.nav>
+    </nav>
   );
 };
