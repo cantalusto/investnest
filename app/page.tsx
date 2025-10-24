@@ -2,6 +2,7 @@
 
 import { AnimatedBackground } from '@/components/AnimatedBackground';
 import { Navbar } from '@/components/Navbar';
+import { CryptoTicker } from '@/components/CryptoTicker';
 import { Hero } from '@/components/Hero';
 import { About } from '@/components/About';
 import { Plans } from '@/components/Plans';
@@ -15,6 +16,7 @@ export default function Home() {
       <AnimatedBackground />
       <div className="relative z-10">
         <Navbar />
+        <CryptoTicker />
         <Hero />
         <About />
         <Plans />
