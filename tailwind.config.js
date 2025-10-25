@@ -14,8 +14,8 @@ module.exports = {
         darkPurple: '#0a0520',
       },
       fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
-        baumans: ['Baumans', 'cursive'],
+        sans: ['var(--font-inter)', 'Inter', 'system-ui', 'sans-serif'],
+        baumans: ['var(--font-baumans)', 'Baumans', 'cursive'],
       },
     },
   },

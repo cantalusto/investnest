@@ -64,7 +64,7 @@ export const CryptoTicker: React.FC = () => {
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, ease: "easeInOut" }}
-      className="fixed top-20 left-0 right-0 z-40 overflow-hidden"
+      className="fixed top-20 left-0 right-0 z-40 overflow-hidden w-full max-w-full"
     >
       {/* Background com animação suave */}
       <div className="absolute inset-0 bg-black/95 backdrop-blur-md" />
@@ -78,14 +78,14 @@ export const CryptoTicker: React.FC = () => {
         }}
       />
 
-      <div className="relative h-12 flex items-center">
+      <div className="relative h-12 flex items-center overflow-hidden w-full">
         {/* Gradient nas bordas para efeito de fade */}
         <div className="absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-black/95 to-transparent z-10 pointer-events-none" />
         <div className="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-black/95 to-transparent z-10 pointer-events-none" />
 
         {/* Scroll infinito */}
         <motion.div
-          className="flex gap-8 whitespace-nowrap"
+          className="flex gap-8 whitespace-nowrap will-change-transform"
           animate={{
             x: [0, -1920], // Ajustar baseado no conteúdo
           }}
@@ -103,7 +103,7 @@ export const CryptoTicker: React.FC = () => {
             return (
               <div
                 key={`${crypto.id}-${index}`}
-                className="flex items-center gap-2 px-4"
+                className="flex items-center gap-2 px-4 flex-shrink-0"
               >
                 {/* Logo da cripto */}
                 <img

@@ -83,7 +83,7 @@ export const Navbar: React.FC = () => {
   };
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50">
+    <nav className="fixed top-0 left-0 right-0 z-50 w-full max-w-full overflow-hidden">
       {/* Background com animação suave */}
       <motion.div
         className={`absolute inset-0 ${scrolled ? 'backdrop-blur-md' : ''}`}
@@ -249,9 +249,9 @@ export const Navbar: React.FC = () => {
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="md:hidden absolute top-full left-0 right-0 bg-black/98 backdrop-blur-lg border-t border-primary/20 shadow-2xl overflow-hidden"
+            className="md:hidden absolute top-full left-0 right-0 w-full bg-black/98 backdrop-blur-lg border-t border-primary/20 shadow-2xl overflow-hidden"
           >
-            <div className="px-6 py-6 space-y-1 max-w-full">
+            <div className="px-6 py-6 space-y-1 max-w-full w-full">
               {menuItems.map((item, index) => {
                 const isActive = activeSection === item.href.replace('#', '');
                 return (
@@ -295,3 +295,4 @@ export const Navbar: React.FC = () => {
     </nav>
   );
 };
+

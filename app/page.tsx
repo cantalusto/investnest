@@ -12,9 +12,9 @@ import { Footer } from '@/components/Footer';
 
 export default function Home() {
   return (
-    <main className="relative min-h-screen">
+    <main className="relative min-h-screen overflow-x-hidden">
       <AnimatedBackground />
-      <div className="relative z-10">
+      <div className="relative z-10 overflow-x-hidden">
         <Navbar />
         <CryptoTicker />
         <Hero />
