@@ -16,7 +16,7 @@ export const Hero: React.FC = () => {
       // Scroll suave customizado com easing
       const startPosition = window.pageYOffset;
       const distance = offsetTop - startPosition;
-      const duration = 1200; // 1.2 segundos
+      const duration = 600; // 0.6 segundos (reduzido de 1.2s)
       let startTime: number | null = null;
 
       const easeInOutCubic = (t: number): number => {
