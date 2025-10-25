@@ -1,9 +1,26 @@
-# Robots.txt for InvestNest
+# robots.txt para InvestNest
+# Atualizado em: 2025-10-25
+
+# Permitir todos os bots
 User-agent: *
 Allow: /
 
-# Sitemaps
+# Bloquear diretórios privados (se houver no futuro)
+Disallow: /api/
+Disallow: /private/
+
+# Googlebot - Configuração específica
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 2
+
+# Bingbot - Configuração específica
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 2
+
+# Sitemap
 Sitemap: https://investnest.com.br/sitemap.xml
 
-# Crawl-delay
-Crawl-delay: 10
+# Host preferencial
+Host: https://investnest.com.br

@@ -64,7 +64,7 @@ export const CryptoTicker: React.FC = () => {
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, ease: "easeInOut" }}
-      className="fixed top-20 left-0 right-0 z-40 overflow-hidden w-full max-w-full"
+      className="fixed top-20 left-0 right-0 z-30 overflow-hidden w-full max-w-full"
     >
       {/* Background com animação suave */}
       <div className="absolute inset-0 bg-black/95 backdrop-blur-md" />
