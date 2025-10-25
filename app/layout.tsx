@@ -64,7 +64,7 @@ export const metadata: Metadata = {
     creator: '@investnest',
   },
   verification: {
-    google: 'seu-codigo-google-search-console',
+    google: 'TBDbonXA2xyUgdT4oMre8WlzMI_jC-eiiXuVOJiFzvM',
   },
   alternates: {
     canonical: 'https://investnest.com.br',
