@@ -12,6 +12,21 @@ interface FAQItemProps {
 const FAQItem: React.FC<FAQItemProps> = ({ question, answer, index }) => {
   const [isOpen, setIsOpen] = useState(false);
 
+  // Função para renderizar texto com InvestNest em Baumans
+  const renderTextWithBrand = (text: string) => {
+    const parts = text.split('InvestNest');
+    if (parts.length === 1) return text;
+    
+    return parts.map((part, i) => (
+      <React.Fragment key={i}>
+        {part}
+        {i < parts.length - 1 && (
+          <span className="font-baumans">InvestNest</span>
+        )}
+      </React.Fragment>
+    ));
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -24,7 +39,7 @@ const FAQItem: React.FC<FAQItemProps> = ({ question, answer, index }) => {
         onClick={() => setIsOpen(!isOpen)}
         className="w-full px-6 py-4 flex items-center justify-between bg-zinc-900/30 hover:bg-zinc-800/50 transition-colors duration-300"
       >
-        <span className="text-left text-lg font-medium text-white">{question}</span>
+        <span className="text-left text-lg font-medium text-white">{renderTextWithBrand(question)}</span>
         <motion.svg
           animate={{ rotate: isOpen ? 180 : 0 }}
           transition={{ duration: 0.3 }}
@@ -51,7 +66,7 @@ const FAQItem: React.FC<FAQItemProps> = ({ question, answer, index }) => {
             className="overflow-hidden"
           >
             <div className="px-6 py-4 bg-zinc-950/50 text-gray-300 leading-relaxed">
-              {answer}
+              {renderTextWithBrand(answer)}
             </div>
           </motion.div>
         )}

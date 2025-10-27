@@ -54,7 +54,7 @@ export const Navbar: React.FC = () => {
       // Scroll suave customizado com easing
       const startPosition = window.pageYOffset;
       const distance = offsetTop - startPosition;
-      const duration = 1200; // 1.2 segundos
+      const duration = 600; // 0.6 segundos (reduzido de 1.2s)
       let startTime: number | null = null;
 
       const easeInOutCubic = (t: number): number => {
@@ -83,7 +83,7 @@ export const Navbar: React.FC = () => {
   };
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50">
+    <nav className="fixed top-0 left-0 right-0 z-50 w-full max-w-full overflow-hidden">
       {/* Background com animação suave */}
       <motion.div
         className={`absolute inset-0 ${scrolled ? 'backdrop-blur-md' : ''}`}
@@ -120,28 +120,11 @@ export const Navbar: React.FC = () => {
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10" style={{ transform: 'translateZ(0)' }}>
         <div className="flex items-center justify-between h-20">
-          {/* Logo e Menu Mobile - juntos à esquerda */}
-          <div className="flex items-center gap-3">
-            {/* Logo mobile - sempre visível */}
-            <a
-              href="#inicio"
-              onClick={(e) => handleNavClick(e, '#inicio')}
-              className="md:hidden flex items-center cursor-pointer"
-            >
-              <Image
-                src="/INVESTNEST - icon.svg"
-                alt="InvestNest"
-                width={40}
-                height={40}
-                className="w-10 h-10"
-                priority
-              />
-            </a>
-            
-            {/* Mobile Menu Button - ao lado da logo */}
+          {/* Mobile: Menu Button à esquerda */}
+          <div className="md:hidden flex items-center">
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="md:hidden text-gray-300 hover:text-primary focus:outline-none relative z-50 p-2 -mr-2"
+              className="text-gray-300 hover:text-primary focus:outline-none relative z-50 p-2"
               aria-label={isOpen ? "Fechar menu" : "Abrir menu"}
             >
               <div className="w-6 h-6 flex items-center justify-center">
@@ -176,12 +159,14 @@ export const Navbar: React.FC = () => {
                 )}
               </div>
             </button>
-            
-            {/* Logo desktop - só quando scrollado */}
+          </div>
+
+          {/* Desktop: Logo à esquerda - só quando scrollado */}
+          <div className="hidden md:flex items-center">
             <a
               href="#inicio"
               onClick={(e) => handleNavClick(e, '#inicio')}
-              className={`hidden md:flex items-center cursor-pointer transition-opacity duration-300 ${
+              className={`flex items-center gap-3 cursor-pointer transition-opacity duration-300 ${
                 scrolled ? 'opacity-100' : 'opacity-0 pointer-events-none'
               }`}
             >
@@ -193,6 +178,9 @@ export const Navbar: React.FC = () => {
                 className="w-10 h-10"
                 priority
               />
+              <span className="font-baumans text-primary text-2xl">
+                InvestNest
+              </span>
             </a>
           </div>
 
@@ -225,19 +213,44 @@ export const Navbar: React.FC = () => {
             })}
           </div>
 
-          {/* Botão Login - à direita */}
-          <a
-            href="#contato"
-            onClick={(e) => handleNavClick(e, '#contato')}
-            className="hidden md:block bg-primary text-black px-6 py-2 rounded-full font-semibold hover:bg-primary/90 transition-all duration-300 hover:scale-105 cursor-pointer"
-            style={{ 
-              transform: 'translateZ(0)',
-              backfaceVisibility: 'hidden',
-              WebkitFontSmoothing: 'antialiased'
-            }}
-          >
-            Login
-          </a>
+          {/* Desktop: Botão Login - à direita */}
+          {/* Mobile: Logo + Nome - à direita */}
+          <div className="flex items-center">
+            {/* Mobile: Logo + Nome quando scrollado */}
+            <a
+              href="#inicio"
+              onClick={(e) => handleNavClick(e, '#inicio')}
+              className={`md:hidden flex items-center gap-2 cursor-pointer transition-opacity duration-300 ${
+                scrolled ? 'opacity-100' : 'opacity-0 pointer-events-none'
+              }`}
+            >
+              <Image
+                src="/INVESTNEST - icon.svg"
+                alt="InvestNest"
+                width={40}
+                height={40}
+                className="w-10 h-10"
+                priority
+              />
+              <span className="font-baumans text-primary text-xl">
+                InvestNest
+              </span>
+            </a>
+
+            {/* Desktop: Botão Login */}
+            <a
+              href="#contato"
+              onClick={(e) => handleNavClick(e, '#contato')}
+              className="hidden md:block bg-primary text-black px-6 py-2 rounded-full font-semibold hover:bg-primary/90 transition-all duration-300 hover:scale-105 cursor-pointer"
+              style={{ 
+                transform: 'translateZ(0)',
+                backfaceVisibility: 'hidden',
+                WebkitFontSmoothing: 'antialiased'
+              }}
+            >
+              Login
+            </a>
+          </div>
         </div>
       </div>
 
@@ -249,9 +262,9 @@ export const Navbar: React.FC = () => {
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="md:hidden absolute top-full left-0 right-0 bg-black/98 backdrop-blur-lg border-t border-primary/20 shadow-2xl overflow-hidden"
+            className="md:hidden fixed top-20 left-0 right-0 w-full bg-black/98 backdrop-blur-lg border-t border-primary/20 shadow-2xl overflow-hidden z-50"
           >
-            <div className="px-6 py-6 space-y-1 max-w-full">
+            <div className="px-6 py-6 space-y-1 max-w-full w-full">
               {menuItems.map((item, index) => {
                 const isActive = activeSection === item.href.replace('#', '');
                 return (
@@ -295,3 +308,4 @@ export const Navbar: React.FC = () => {
     </nav>
   );
 };
+

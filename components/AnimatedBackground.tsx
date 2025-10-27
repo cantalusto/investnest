@@ -146,6 +146,9 @@ export const AnimatedBackground: React.FC = () => {
       style={{
         background: '#18181b',
         zIndex: 0,
+        maxWidth: '100vw',
+        maxHeight: '100vh',
+        overflow: 'hidden',
       }}
     />
   );
