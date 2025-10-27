@@ -60,7 +60,7 @@ export const Plans: React.FC = () => {
       percentage: '10% por ciclo',
       description: 'Ideal para quem está começando no mundo dos investimentos em criptomoedas. Com ciclos de 30 dias, você obtém retornos rápidos e pode reinvestir ou sacar seus rendimentos.',
       features: [
-        'Investimento mínimo de apenas R$ 100',
+        'Investimento apartir de apenas R$ 100',
         'Ciclo curto de 30 dias',
         'Rendimento de 10% por ciclo',
         'Execução automática via Smart Contract',
@@ -126,7 +126,7 @@ export const Plans: React.FC = () => {
       percentage: '77% por ciclo',
       description: 'Plano de médio prazo com rendimentos substancialmente maiores. Ideal para quem pode manter o investimento por 6 meses e busca retornos expressivos.',
       features: [
-        'Investimento mínimo de R$ 100',
+        'Investimento apartir de apenas R$ 100',
         'Rendimento de 77% em 180 dias',
         'Composição automática de juros',
         'Lock-in de 6 meses para garantir rendimento máximo',
@@ -192,7 +192,7 @@ export const Plans: React.FC = () => {
       percentage: '176,8% por ciclo',
       description: 'Plano anual premium com retornos extraordinários. Para investidores pacientes que buscam multiplicar seu capital em 1 ano.',
       features: [
-        'Investimento mínimo de R$ 100',
+        'Investimento apartir de apenas R$ 100',
         'Rendimento extraordinário de 176,8% ao ano',
         'Estratégias de longuíssimo prazo',
         'Participação em airdrops e eventos exclusivos',
