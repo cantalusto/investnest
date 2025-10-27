@@ -50,7 +50,7 @@ export const Contact: React.FC = () => {
                 <h3 className="text-xl font-semibold text-white mb-2">Email corporativo</h3>
                 <a
                   href="mailto:contato@investnest.com.br"
-                  className="text-primary text-2xl font-bold hover:text-primary/80 transition-colors duration-300"
+                  className="text-primary text-lg sm:text-xl md:text-2xl font-bold hover:text-primary/80 transition-colors duration-300 break-all"
                 >
                   contato@investnest.com.br
                 </a>
