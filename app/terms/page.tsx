@@ -153,25 +153,20 @@ CLÁUSULA TERCEIRA — CONDIÇÕES FINANCEIRAS
 
 3.1 O valor investido pelo Cliente será devolvido em sua integralidade (100%) acrescido de juros de acordo com o Plano de investimento escolhido conforme tabela abaixo:
 
-PLANO BRONZE
-• Faixa de Valor: R$ 100,00 a R$ 4.999,00
-• Rendimento Previsto: 1,2% ao mês
-• Prazo do Ciclo: 30 a 360 dias
+PLANO PADRÃO (30 dias por ciclo)
+• Faixa de Valor: R$ 100,00 a R$ 500.000,00
+• Rendimento Previsto: Conforme tabela da plataforma
+• Prazo do Ciclo: 30 dias
 
-PLANO PRATA
-• Faixa de Valor: R$ 5.000,00 a R$ 19.999,00
-• Rendimento Previsto: 1,5% ao mês
-• Prazo do Ciclo: 30 a 360 dias
+PLANO LOOPING PRATA (180 dias por ciclo)
+• Faixa de Valor: R$ 100,00 a R$ 500.000,00
+• Rendimento Previsto: Juros compostos com rendimento progressivo
+• Prazo do Ciclo: 180 dias
 
-PLANO OURO
-• Faixa de Valor: R$ 20.000,00 a R$ 49.999,00
-• Rendimento Previsto: 1,8% ao mês
-• Prazo do Ciclo: 30 a 360 dias
-
-PLANO DIAMANTE
-• Faixa de Valor: R$ 50.000,00 a R$ 500.000,00
-• Rendimento Previsto: 2,0% ao mês
-• Prazo do Ciclo: 30 a 360 dias
+PLANO LOOPING OURO (360 dias por ciclo)
+• Faixa de Valor: R$ 100,00 a R$ 500.000,00
+• Rendimento Previsto: Juros compostos com rendimento progressivo otimizado
+• Prazo do Ciclo: 360 dias
 
 3.2 Caso deseje realizar o RESGATE ANTECIPADO o Cliente deve entrar em contato pelos canais de atendimento especificado na plataforma / app.
 
@@ -482,32 +477,25 @@ export default function TermsPage() {
                   </p>
                   
                   <div className="bg-zinc-900/50 p-4 rounded-lg space-y-3 mb-4">
-                    <div className="border-l-4 border-amber-600 pl-4">
-                      <p className="font-bold text-amber-500">PLANO BRONZE</p>
-                      <p className="text-sm text-gray-300">• Faixa de Valor: R$ 100,00 a R$ 4.999,00</p>
-                      <p className="text-sm text-gray-300">• Rendimento Previsto: 1,2% ao mês</p>
-                      <p className="text-sm text-gray-300">• Prazo do Ciclo: 30 a 360 dias</p>
+                    <div className="border-l-4 border-blue-500 pl-4">
+                      <p className="font-bold text-blue-400">PLANO PADRÃO (30 dias por ciclo)</p>
+                      <p className="text-sm text-gray-300">• Faixa de Valor: R$ 100,00 a R$ 500.000,00</p>
+                      <p className="text-sm text-gray-300">• Rendimento Previsto: Conforme tabela da plataforma</p>
+                      <p className="text-sm text-gray-300">• Prazo do Ciclo: 30 dias</p>
                     </div>
                     
                     <div className="border-l-4 border-gray-400 pl-4">
-                      <p className="font-bold text-gray-400">PLANO PRATA</p>
-                      <p className="text-sm text-gray-300">• Faixa de Valor: R$ 5.000,00 a R$ 19.999,00</p>
-                      <p className="text-sm text-gray-300">• Rendimento Previsto: 1,5% ao mês</p>
-                      <p className="text-sm text-gray-300">• Prazo do Ciclo: 30 a 360 dias</p>
+                      <p className="font-bold text-gray-300">PLANO LOOPING PRATA (180 dias por ciclo)</p>
+                      <p className="text-sm text-gray-300">• Faixa de Valor: R$ 100,00 a R$ 500.000,00</p>
+                      <p className="text-sm text-gray-300">• Rendimento Previsto: Juros compostos com rendimento progressivo</p>
+                      <p className="text-sm text-gray-300">• Prazo do Ciclo: 180 dias</p>
                     </div>
                     
                     <div className="border-l-4 border-yellow-500 pl-4">
-                      <p className="font-bold text-yellow-500">PLANO OURO</p>
-                      <p className="text-sm text-gray-300">• Faixa de Valor: R$ 20.000,00 a R$ 49.999,00</p>
-                      <p className="text-sm text-gray-300">• Rendimento Previsto: 1,8% ao mês</p>
-                      <p className="text-sm text-gray-300">• Prazo do Ciclo: 30 a 360 dias</p>
-                    </div>
-                    
-                    <div className="border-l-4 border-blue-400 pl-4">
-                      <p className="font-bold text-blue-400">PLANO DIAMANTE</p>
-                      <p className="text-sm text-gray-300">• Faixa de Valor: R$ 50.000,00 a R$ 500.000,00</p>
-                      <p className="text-sm text-gray-300">• Rendimento Previsto: 2,0% ao mês</p>
-                      <p className="text-sm text-gray-300">• Prazo do Ciclo: 30 a 360 dias</p>
+                      <p className="font-bold text-yellow-400">PLANO LOOPING OURO (360 dias por ciclo)</p>
+                      <p className="text-sm text-gray-300">• Faixa de Valor: R$ 100,00 a R$ 500.000,00</p>
+                      <p className="text-sm text-gray-300">• Rendimento Previsto: Juros compostos com rendimento progressivo otimizado</p>
+                      <p className="text-sm text-gray-300">• Prazo do Ciclo: 360 dias</p>
                     </div>
                   </div>
 

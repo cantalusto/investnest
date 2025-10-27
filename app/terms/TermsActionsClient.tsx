@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 interface Props {
@@ -9,28 +9,22 @@ interface Props {
 
 export default function TermsActionsClient({ termsText }: Props) {
   const router = useRouter();
+  const [isGenerating, setIsGenerating] = useState(false);
 
   const downloadPdf = useCallback(async () => {
+    if (isGenerating) return;
+    
+    setIsGenerating(true);
+    
     try {
-      // dynamic import to avoid bundler errors
-      const jsPDFModule = await import('jspdf').catch(() => null);
-      const jsPDF = jsPDFModule ? (jsPDFModule.default ?? jsPDFModule.jsPDF) : null;
-
-      if (!jsPDF) {
-        // fallback to text file if jsPDF is not available
-        const blob = new Blob([termsText], { type: 'text/plain;charset=utf-8' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'investnest-termos.txt';
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
-        URL.revokeObjectURL(url);
-        return;
-      }
-
-      const doc = new jsPDF({ unit: 'pt', format: 'a4' });
+      // Import jsPDF dynamically
+      const { default: jsPDF } = await import('jspdf');
+      
+      const doc = new jsPDF({ 
+        unit: 'pt', 
+        format: 'a4',
+        compress: true
+      });
       const pageWidth = (doc.internal.pageSize?.getWidth && doc.internal.pageSize.getWidth()) || (doc.internal.pageSize?.width ?? 595);
       const pageHeight = (doc.internal.pageSize?.getHeight && doc.internal.pageSize.getHeight()) || (doc.internal.pageSize?.height ?? 842);
       const margin = 40;
@@ -133,8 +127,7 @@ export default function TermsActionsClient({ termsText }: Props) {
       doc.save('investnest-termos.pdf');
     } catch (err) {
       // final fallback
-      // eslint-disable-next-line no-console
-      console.error('Failed to generate PDF or fallback file', err);
+      console.error('Failed to generate PDF, using text fallback', err);
       try {
         const blob = new Blob([termsText], { type: 'text/plain;charset=utf-8' });
         const url = URL.createObjectURL(blob);
@@ -146,10 +139,12 @@ export default function TermsActionsClient({ termsText }: Props) {
         a.remove();
         URL.revokeObjectURL(url);
       } catch (e) {
-        window.print();
+        alert('Não foi possível gerar o PDF. Por favor, use Ctrl+P para imprimir a página.');
       }
+    } finally {
+      setIsGenerating(false);
     }
-  }, [termsText]);
+  }, [termsText, isGenerating]);
 
   return (
     <div className="flex items-center justify-between mb-8">
@@ -162,12 +157,13 @@ export default function TermsActionsClient({ termsText }: Props) {
 
       <button
         onClick={downloadPdf}
-        className="inline-flex items-center gap-2 px-4 py-2 rounded text-sm bg-indigo-600 text-white hover:bg-indigo-500 transition-colors"
+        disabled={isGenerating}
+        className="inline-flex items-center gap-2 px-4 py-2 rounded text-sm bg-indigo-600 text-white hover:bg-indigo-500 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
       >
         <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v12m0 0l4-4m-4 4-4-4M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
         </svg>
-        Baixar PDF
+        {isGenerating ? 'Gerando PDF...' : 'Baixar PDF'}
       </button>
     </div>
   );
