@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Link from 'next/link';
 
 export const Footer: React.FC = () => {
   return (
@@ -11,7 +12,9 @@ export const Footer: React.FC = () => {
             © 2025 <span className="font-baumans">InvestNest</span>. Todos os direitos reservados.
           </p>
           <p className="text-gray-500 text-xs">
-            Termos de uso - Política de privacidade
+            <Link href="/terms" className="underline text-gray-300 hover:text-white">
+              TERMO DE USO PLATAFORMA INVESTNEST
+            </Link>
           </p>
         </div>
       </div>
