@@ -12,9 +12,11 @@ export const Footer: React.FC = () => {
             © 2025 <span className="font-baumans">InvestNest</span>. Todos os direitos reservados.
           </p>
           <p className="text-gray-500 text-xs">
-            <Link href="/terms" className="underline text-gray-300 hover:text-white">
-              TERMO DE USO PLATAFORMA INVESTNEST
+            <Link href="/terms" className="hover:text-primary transition-colors duration-300">
+              Termos de uso
             </Link>
+            {' - '}
+            <span>Política de privacidade</span>
           </p>
         </div>
       </div>

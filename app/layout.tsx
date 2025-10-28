@@ -99,7 +99,7 @@ export default function RootLayout({
   };
 
   return (
-    <html lang="pt-BR" className={`${inter.variable} ${baumans.variable}`} suppressHydrationWarning>
+    <html lang="pt-BR" className={`${inter.variable} ${baumans.variable}`}>
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
         <script
@@ -107,9 +107,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body className={`${inter.className} overflow-x-hidden`} suppressHydrationWarning>
-        {children}
-      </body>
+      <body className={`${inter.className} overflow-x-hidden`}>{children}</body>
     </html>
   )
 }

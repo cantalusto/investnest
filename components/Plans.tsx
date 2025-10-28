@@ -13,6 +13,9 @@ interface PlanCardProps {
 }
 
 const PlanCard: React.FC<PlanCardProps> = ({ title, range, percentage, delay, onClick }) => {
+  // Extrair valores min e max do range
+  const [minValue, maxValue] = range.split(' - ').map(val => val.trim());
+  
   return (
     <motion.div
       initial={{ opacity: 0, y: 50 }}
@@ -21,11 +24,22 @@ const PlanCard: React.FC<PlanCardProps> = ({ title, range, percentage, delay, on
       viewport={{ once: true }}
       whileHover={{ scale: 1.05, y: -10 }}
       onClick={onClick}
-      className="bg-gradient-to-br from-zinc-900/80 to-zinc-950/80 backdrop-blur-sm border-2 border-primary/30 rounded-2xl p-6 md:p-8 hover:border-primary/80 transition-all duration-300 shadow-xl hover:shadow-2xl hover:shadow-primary/30 cursor-pointer group"
+      className="bg-gradient-to-br from-zinc-900/80 to-zinc-950/80 backdrop-blur-sm border-2 border-primary/30 rounded-2xl p-6 md:p-8 hover:border-primary/80 transition-all duration-300 shadow-xl hover:shadow-2xl hover:shadow-primary/30 cursor-pointer group min-h-[320px] flex flex-col justify-between"
     >
-      <h4 className="text-gray-400 text-sm md:text-base mb-2">{title}</h4>
-      <p className="text-white text-xl md:text-2xl font-bold mb-4">{range}</p>
-      <p className="text-primary text-2xl md:text-3xl font-bold">{percentage}</p>
+      <div>
+        <h4 className="text-white text-xl md:text-2xl font-bold mb-6">{title}</h4>
+        
+        <div className="mb-6">
+          <p className="text-gray-400 text-sm md:text-base mb-2">Faixa de investimento:</p>
+          <p className="text-white text-lg md:text-xl font-semibold">De {minValue}</p>
+          <p className="text-white text-lg md:text-xl font-semibold">Á {maxValue}</p>
+        </div>
+        
+        <div className="mb-4">
+          <p className="text-gray-400 text-sm md:text-base mb-2">Retorno de investimento:</p>
+          <p className="text-primary text-xl md:text-2xl font-bold">{percentage.replace('por ciclo', 'ao final do ciclo')}</p>
+        </div>
+      </div>
       
       {/* Indicador de clique */}
       <div className="mt-4 flex items-center gap-2 text-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300">

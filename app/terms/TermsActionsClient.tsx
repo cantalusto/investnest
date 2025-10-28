@@ -1,171 +1,174 @@
 'use client';
 
-import React, { useCallback, useState } from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
-interface Props {
+interface TermsActionsClientProps {
   termsText: string;
 }
 
-export default function TermsActionsClient({ termsText }: Props) {
+export const TermsActionsClient: React.FC<TermsActionsClientProps> = ({ termsText }) => {
   const router = useRouter();
-  const [isGenerating, setIsGenerating] = useState(false);
+  const [isDownloading, setIsDownloading] = useState(false);
 
-  const downloadPdf = useCallback(async () => {
-    if (isGenerating) return;
-    
-    setIsGenerating(true);
-    
+  const handleBack = () => {
+    router.push('/');
+  };
+
+  const downloadPdf = async () => {
+    setIsDownloading(true);
     try {
-      // Import jsPDF dynamically
       const { default: jsPDF } = await import('jspdf');
+      const doc = new jsPDF();
       
-      const doc = new jsPDF({ 
-        unit: 'pt', 
-        format: 'a4',
-        compress: true
-      });
-      const pageWidth = (doc.internal.pageSize?.getWidth && doc.internal.pageSize.getWidth()) || (doc.internal.pageSize?.width ?? 595);
-      const pageHeight = (doc.internal.pageSize?.getHeight && doc.internal.pageSize.getHeight()) || (doc.internal.pageSize?.height ?? 842);
-      const margin = 40;
-      let cursorY = margin + 10;
+      let yPosition = 20;
+      const pageHeight = doc.internal.pageSize.height;
+      const pageWidth = doc.internal.pageSize.width;
+      const margin = 20;
+      const maxWidth = pageWidth - (margin * 2);
+      const lineHeight = 5;
 
-      // Try to load logo SVG from public and render to canvas to get PNG data URL
-      try {
-        const logoResp = await fetch('/INVESTNEST - LOGO.svg');
-        if (logoResp.ok) {
-          const svgText = await logoResp.text();
-          const blob = new Blob([svgText], { type: 'image/svg+xml' });
-          const url = URL.createObjectURL(blob);
-          const img = new Image();
-          img.crossOrigin = 'anonymous';
-          const imgLoad = new Promise<void>((resolve, reject) => {
-            img.onload = () => resolve();
-            img.onerror = () => reject();
-          });
-          img.src = url;
-          await imgLoad;
-
-          // Draw to canvas to convert to PNG
-          const canvas = document.createElement('canvas');
-          const maxLogoW = 120;
-          const scale = Math.min(maxLogoW / img.width, 1);
-          canvas.width = img.width * scale || maxLogoW;
-          canvas.height = img.height * scale || (canvas.width * 0.3);
-          const ctx = canvas.getContext('2d');
-          if (ctx) {
-            // optional white bg
-            ctx.fillStyle = '#ffffff';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-            const imgData = canvas.toDataURL('image/png');
-            doc.addImage(imgData, 'PNG', margin, cursorY, canvas.width, canvas.height);
-            cursorY += canvas.height + 10;
-          }
-          URL.revokeObjectURL(url);
+      // Função para adicionar nova página se necessário
+      const checkNewPage = (extraSpace = 0) => {
+        if (yPosition + extraSpace > pageHeight - margin) {
+          doc.addPage();
+          yPosition = margin;
+          return true;
         }
-      } catch (e) {
-        // ignore logo errors
-      }
+        return false;
+      };
 
-      // Title
+      // Função para adicionar texto com quebra de linha automática
+      const addText = (text: string, fontSize = 9, isBold = false) => {
+        doc.setFontSize(fontSize);
+        const lines = doc.splitTextToSize(text, maxWidth);
+        
+        for (let i = 0; i < lines.length; i++) {
+          checkNewPage();
+          doc.text(lines[i], margin, yPosition);
+          yPosition += lineHeight;
+        }
+      };
+
+      // Logo
+      doc.setFontSize(24);
+      doc.setTextColor(16, 185, 129); // primary color
+      doc.text('InvestNest', pageWidth / 2, yPosition, { align: 'center' });
+      yPosition += 10;
+
+      // Título
+      doc.setFontSize(14);
+      doc.setTextColor(0, 0, 0);
       doc.setFont('helvetica', 'bold');
-      doc.setFontSize(16);
-      doc.text('TERMO DE USO PLATAFORMA INVESTNEST', pageWidth / 2, cursorY, { align: 'center' });
-      cursorY += 20;
+      doc.text('TERMOS DE USO E CONDIÇÕES GERAIS', pageWidth / 2, yPosition, { align: 'center' });
+      yPosition += 10;
 
-      // Prepare sections: split by double newlines
-      const sections = termsText.split(/\n\s*\n/);
+      // Data
+      doc.setFontSize(9);
       doc.setFont('helvetica', 'normal');
-      doc.setFontSize(11);
-      const lineHeight = 14;
+      doc.text('Última atualização: 27/10/2025', pageWidth / 2, yPosition, { align: 'center' });
+      yPosition += 10;
 
-      for (let s = 0; s < sections.length; s++) {
-        const sec = sections[s].trim();
-        if (!sec) continue;
+      // Resetar cor para preto
+      doc.setTextColor(0, 0, 0);
 
-        // Detect heading: starts with number or ALL CAPS short line
-        const firstLine = sec.split('\n')[0].trim();
-        const isHeading = /^\d+\.?\s/.test(firstLine) || (firstLine.length <= 60 && firstLine === firstLine.toUpperCase());
-
-        if (isHeading) {
-          doc.setFont('helvetica', 'bold');
-          doc.setFontSize(13);
-          const headingLines = doc.splitTextToSize(firstLine, pageWidth - margin * 2);
-          for (const hl of headingLines) {
-            if (cursorY + lineHeight > pageHeight - margin) { doc.addPage(); cursorY = margin; }
-            doc.text(hl, margin, cursorY);
-            cursorY += lineHeight;
+      // Processar o conteúdo separando seções
+      const sections = termsText.split('\n\n');
+      
+      for (const section of sections) {
+        if (!section.trim()) continue;
+        
+        // Ignorar o separador com símbolos
+        if (section.includes('═══')) continue;
+        
+        const lines = section.split('\n');
+        
+        for (const line of lines) {
+          if (!line.trim()) {
+            yPosition += 3;
+            continue;
           }
-          // remaining paragraph (without the heading line)
-          const rest = sec.split('\n').slice(1).join('\n').trim();
-          if (rest) {
+          
+          checkNewPage(10);
+          
+          // Detectar títulos de seções (começam com número ou CLÁUSULA ou CONSIDERANDO)
+          if (
+            /^\d+\./.test(line) || 
+            line.startsWith('CLÁUSULA') || 
+            line.startsWith('CONSIDERANDO') ||
+            line.startsWith('CONTRATO DE') ||
+            line.startsWith('PLANO PADRÃO') ||
+            line.startsWith('PLANO LOOPING') ||
+            line.startsWith('DOCUMENTO ASSINADO')
+          ) {
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(10);
+            addText(line, 10);
             doc.setFont('helvetica', 'normal');
-            doc.setFontSize(11);
-            const lines = doc.splitTextToSize(rest, pageWidth - margin * 2);
-            for (const line of lines) {
-              if (cursorY + lineHeight > pageHeight - margin) { doc.addPage(); cursorY = margin; }
-              doc.text(line, margin, cursorY);
-              cursorY += lineHeight;
-            }
+            doc.setFontSize(9);
+            yPosition += 2;
           }
-        } else {
-          // regular paragraph
-          doc.setFont('helvetica', 'normal');
-          doc.setFontSize(11);
-          const lines = doc.splitTextToSize(sec, pageWidth - margin * 2);
-          for (const line of lines) {
-            if (cursorY + lineHeight > pageHeight - margin) { doc.addPage(); cursorY = margin; }
-            doc.text(line, margin, cursorY);
-            cursorY += lineHeight;
+          // Detectar nomes da empresa
+          else if (line.includes('INVEST NEST TECNOLOGIA')) {
+            doc.setFont('helvetica', 'bold');
+            addText(line, 9);
+            doc.setFont('helvetica', 'normal');
+          }
+          // Texto normal
+          else {
+            addText(line, 9);
           }
         }
-
-        cursorY += 6; // spacing between sections
+        
+        yPosition += 3; // Espaço entre seções
       }
 
-      doc.save('investnest-termos.pdf');
-    } catch (err) {
-      // final fallback
-      console.error('Failed to generate PDF, using text fallback', err);
-      try {
-        const blob = new Blob([termsText], { type: 'text/plain;charset=utf-8' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'investnest-termos.txt';
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
-        URL.revokeObjectURL(url);
-      } catch (e) {
-        alert('Não foi possível gerar o PDF. Por favor, use Ctrl+P para imprimir a página.');
-      }
+      // Salvar
+      doc.save('investnest-termos-de-uso.pdf');
+    } catch (error) {
+      console.error('Erro ao gerar PDF:', error);
+      alert('Erro ao gerar PDF. Por favor, tente novamente.');
     } finally {
-      setIsGenerating(false);
+      setIsDownloading(false);
     }
-  }, [termsText, isGenerating]);
+  };
 
   return (
-    <div className="flex items-center justify-between mb-8">
-      <button
-        onClick={() => router.back()}
-        className="px-4 py-2 rounded bg-zinc-800 text-white text-sm hover:bg-zinc-700 transition-colors"
-      >
-        Voltar
-      </button>
+    <div className="sticky top-0 z-50 bg-zinc-900/95 backdrop-blur-md border-b border-primary/20">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+        <button
+          onClick={handleBack}
+          className="flex items-center gap-2 text-primary hover:text-primary/80 transition-colors duration-300"
+        >
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          </svg>
+          Voltar
+        </button>
 
-      <button
-        onClick={downloadPdf}
-        disabled={isGenerating}
-        className="inline-flex items-center gap-2 px-4 py-2 rounded text-sm bg-indigo-600 text-white hover:bg-indigo-500 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-          <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v12m0 0l4-4m-4 4-4-4M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-        </svg>
-        {isGenerating ? 'Gerando PDF...' : 'Baixar PDF'}
-      </button>
+        <button
+          onClick={downloadPdf}
+          disabled={isDownloading}
+          className="flex items-center gap-2 bg-primary hover:bg-primary/80 text-white px-4 py-2 rounded-lg transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          {isDownloading ? (
+            <>
+              <svg className="animate-spin w-5 h-5" fill="none" viewBox="0 0 24 24">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+              Gerando...
+            </>
+          ) : (
+            <>
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+              Baixar PDF
+            </>
+          )}
+        </button>
+      </div>
     </div>
   );
-
-}
+};

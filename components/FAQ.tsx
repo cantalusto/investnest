@@ -66,11 +66,7 @@ const FAQItem: React.FC<FAQItemProps> = ({ question, answer, index }) => {
             className="overflow-hidden"
           >
             <div className="px-6 py-4 bg-zinc-950/50 text-gray-300 leading-relaxed">
-              {answer.split('\n\n').map((para, i) => (
-                <p key={i} className="mb-3">
-                  {renderTextWithBrand(para)}
-                </p>
-              ))}
+              {renderTextWithBrand(answer)}
             </div>
           </motion.div>
         )}
@@ -82,44 +78,29 @@ const FAQItem: React.FC<FAQItemProps> = ({ question, answer, index }) => {
 export const FAQ: React.FC = () => {
   const faqs = [
     {
-      question: 'O que significa aceitar os Termos de Uso da InvestNest?',
-      answer:
-        'Ao criar uma conta e utilizar a plataforma, o usuário declara estar de acordo com todas as regras descritas nos Termos de Uso, incluindo o funcionamento dos investimentos, responsabilidades, políticas de segurança e penalidades em caso de descumprimento.\n\nA aceitação é obrigatória para o acesso e uso dos serviços da InvestNest.',
-    },
-    {
-      question: 'Quem pode usar a plataforma da InvestNest?',
-      answer:
-        'A plataforma é destinada a pessoas jurídicas e físicas maiores de 18 anos, residentes no Brasil, que realizem o cadastro com informações verdadeiras e atualizadas.\n\nContas criadas com dados falsos ou incompletos podem ser suspensas ou encerradas.',
-    },
-    {
-      question: 'Quais são as responsabilidades do usuário?',
-      answer:
-        'O usuário deve:\nFornecer dados corretos e atualizados;\nNão utilizar a plataforma para fins ilegais, fraudulentos ou proibidos;\nAssumir os riscos inerentes aos investimentos em criptoativos e DeFi;\nRespeitar as regras e limites definidos em contrato.',
-    },
-    {
       question: 'A InvestNest garante lucros fixos?',
       answer:
-        'Não. Os planos de investimento apresentam percentuais de rendimento estimados, definidos por contratos inteligentes (Smart Contracts), mas todos os investimentos envolvem riscos de mercado e variações.\n\nA InvestNest atua como intermediadora tecnológica, facilitando o acesso e oferecendo automação e transparência, sem prometer ganhos garantidos.',
-    },
-    {
-      question: 'O que acontece se eu descumprir os Termos de Uso?',
-      answer:
-        'Em caso de violação das regras, fraude, lavagem de dinheiro ou informações falsas, a InvestNest poderá suspender ou encerrar sua conta, além de comunicar às autoridades competentes, se necessário.\n\nOs valores bloqueados seguirão as condições do contrato vigente.',
-    },
-    {
-      question: 'Posso sacar meu investimento antes do prazo?',
-      answer:
-        'Sim, porém o saque emergencial implica multa de 20% sobre o valor investido e perda dos rendimentos do ciclo em andamento.\n\nEssas regras garantem o equilíbrio financeiro da plataforma e a segurança dos demais investidores.',
-    },
-    {
-      question: 'Como serei informado sobre alterações nos Termos de Uso?',
-      answer:
-        'Sempre que houver atualizações relevantes, a InvestNest notificará o usuário por meio da plataforma, aplicativo ou e-mail cadastrado.\n\nRecomenda-se que o usuário verifique periodicamente os Termos de Uso para manter-se informado sobre eventuais mudanças.',
+        'Não. Os rendimentos apresentados são percentuais previstos, calculados por contratos inteligentes. Como em qualquer investimento, há riscos e variações de mercado.',
     },
     {
       question: 'Como a InvestNest gera lucro?',
       answer:
-        'A InvestNest utiliza um modelo de retorno de circulação descentralizado e distribuído, no qual todos os participantes podem iniciar seus próprios planos de renda.\n\nPor meio de contratos inteligentes, os usuários fornecem liquidez e recebem retornos automáticos, de acordo com o plano escolhido.\n\nOs recursos são transformados em criptoativos e movimentados de forma transparente na blockchain.',
+        'A plataforma utiliza contratos inteligentes (Smart Contracts) em protocolos DeFi para gerar rendimentos através de estratégias automatizadas de yield farming e staking.',
+    },
+    {
+      question: 'Posso sacar meu investimento antes do prazo?',
+      answer:
+        'Os ciclos de investimento possuem prazos definidos (30, 180 ou 360 dias). O resgate antecipado pode estar sujeito a penalidades conforme especificado no contrato.',
+    },
+    {
+      question: 'Quem pode usar a plataforma?',
+      answer:
+        'A plataforma está disponível para investidores brasileiros maiores de 18 anos que concordem com os termos de uso e política de privacidade.',
+    },
+    {
+      question: 'A plataforma é segura?',
+      answer:
+        'Sim. Utilizamos tecnologia blockchain e contratos inteligentes auditados. Além disso, seguimos a LGPD e implementamos as melhores práticas de segurança da informação.',
     },
   ];
 
@@ -137,7 +118,7 @@ export const FAQ: React.FC = () => {
           className="text-center mb-16"
         >
           <h2 className="text-3xl md:text-5xl font-bold mb-4">
-            FAQ — perguntas frequentes
+            Perguntas Frequentes <span className="text-primary">(FAQ)</span>
           </h2>
         </motion.div>
 

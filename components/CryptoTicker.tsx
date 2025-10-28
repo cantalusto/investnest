@@ -30,77 +30,20 @@ export const CryptoTicker: React.FC = () => {
     const fetchCryptoData = async () => {
       try {
         const response = await fetch(
-          'https://api.coingecko.com/api/v3/coins/markets?vs_currency=brl&order=market_cap_desc&per_page=20&page=1&sparkline=false&price_change_percentage=24h',
-          {
-            headers: {
-              'Accept': 'application/json',
-            },
-          }
+          'https://api.coingecko.com/api/v3/coins/markets?vs_currency=brl&order=market_cap_desc&per_page=20&page=1&sparkline=false&price_change_percentage=24h'
         );
-        
-        if (!response.ok) {
-          throw new Error(`API Error: ${response.status}`);
-        }
-        
         const data = await response.json();
         setCryptoData(data);
         setIsLoading(false);
       } catch (error) {
-        // Silenciar erro no console e usar dados mockados
-        // console.error('Erro ao buscar dados de criptomoedas:', error);
-        
-        // Dados mockados como fallback
-        const mockData: CryptoData[] = [
-          {
-            id: 'bitcoin',
-            symbol: 'btc',
-            name: 'Bitcoin',
-            current_price: 350000,
-            price_change_percentage_24h: 2.5,
-            image: 'https://assets.coingecko.com/coins/images/1/large/bitcoin.png'
-          },
-          {
-            id: 'ethereum',
-            symbol: 'eth',
-            name: 'Ethereum',
-            current_price: 13000,
-            price_change_percentage_24h: 1.8,
-            image: 'https://assets.coingecko.com/coins/images/279/large/ethereum.png'
-          },
-          {
-            id: 'binancecoin',
-            symbol: 'bnb',
-            name: 'BNB',
-            current_price: 1800,
-            price_change_percentage_24h: -0.5,
-            image: 'https://assets.coingecko.com/coins/images/825/large/bnb-icon2_2x.png'
-          },
-          {
-            id: 'solana',
-            symbol: 'sol',
-            name: 'Solana',
-            current_price: 850,
-            price_change_percentage_24h: 3.2,
-            image: 'https://assets.coingecko.com/coins/images/4128/large/solana.png'
-          },
-          {
-            id: 'ripple',
-            symbol: 'xrp',
-            name: 'XRP',
-            current_price: 3.5,
-            price_change_percentage_24h: 1.2,
-            image: 'https://assets.coingecko.com/coins/images/44/large/xrp-symbol-white-128.png'
-          }
-        ];
-        
-        setCryptoData(mockData);
+        console.error('Erro ao buscar dados de criptomoedas:', error);
         setIsLoading(false);
       }
     };
 
     fetchCryptoData();
-    // Atualizar a cada 2 minutos (reduzido para evitar rate limit)
-    const interval = setInterval(fetchCryptoData, 120000);
+    // Atualizar a cada 60 segundos
+    const interval = setInterval(fetchCryptoData, 60000);
 
     return () => clearInterval(interval);
   }, []);
