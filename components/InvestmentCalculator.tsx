@@ -209,7 +209,7 @@ const InvestmentCalculator: React.FC = () => {
             </div>
           </div>
           <p className="text-xs text-gray-500 mt-4 text-center">
-            * Simulação baseada em juros compostos por ciclo de 30 dias
+            * Simulação baseada em juros compostos por ciclo de {days} dias
           </p>
         </motion.div>
       )}
