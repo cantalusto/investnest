@@ -3,8 +3,9 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { PlanModal } from './PlanModal';
+import InvestmentCalculator from './InvestmentCalculator';
 
-interface PlanCardProps {
+interface SimplePlanCardProps {
   title: string;
   range: string;
   percentage: string;
@@ -12,10 +13,7 @@ interface PlanCardProps {
   onClick: () => void;
 }
 
-const PlanCard: React.FC<PlanCardProps> = ({ title, range, percentage, delay, onClick }) => {
-  // Extrair valores min e max do range
-  const [minValue, maxValue] = range.split(' - ').map(val => val.trim());
-  
+const SimplePlanCard: React.FC<SimplePlanCardProps> = ({ title, range, percentage, delay, onClick }) => {
   return (
     <motion.div
       initial={{ opacity: 0, y: 50 }}
@@ -24,24 +22,12 @@ const PlanCard: React.FC<PlanCardProps> = ({ title, range, percentage, delay, on
       viewport={{ once: true }}
       whileHover={{ scale: 1.05, y: -10 }}
       onClick={onClick}
-      className="bg-gradient-to-br from-zinc-900/80 to-zinc-950/80 backdrop-blur-sm border-2 border-primary/30 rounded-2xl p-6 md:p-8 hover:border-primary/80 transition-all duration-300 shadow-xl hover:shadow-2xl hover:shadow-primary/30 cursor-pointer group min-h-[320px] flex flex-col justify-between"
+      className="bg-gradient-to-br from-zinc-900/80 to-zinc-950/80 backdrop-blur-sm border-2 border-primary/30 rounded-2xl p-6 hover:border-primary/80 transition-all duration-300 shadow-xl hover:shadow-2xl hover:shadow-primary/30 cursor-pointer group"
     >
-      <div>
-        <h4 className="text-white text-xl md:text-2xl font-bold mb-6">{title}</h4>
-        
-        <div className="mb-6">
-          <p className="text-gray-400 text-sm md:text-base mb-2">Faixa de investimento:</p>
-          <p className="text-white text-lg md:text-xl font-semibold">De {minValue}</p>
-          <p className="text-white text-lg md:text-xl font-semibold">Á {maxValue}</p>
-        </div>
-        
-        <div className="mb-4">
-          <p className="text-gray-400 text-sm md:text-base mb-2">Retorno de investimento:</p>
-          <p className="text-primary text-xl md:text-2xl font-bold">{percentage.replace('por ciclo', 'ao final do ciclo')}</p>
-        </div>
-      </div>
+      <h4 className="text-gray-400 text-sm md:text-base mb-2">{title}</h4>
+      <p className="text-white text-xl md:text-2xl font-bold mb-4">{range}</p>
+      <p className="text-primary text-2xl md:text-3xl font-bold">{percentage}</p>
       
-      {/* Indicador de clique */}
       <div className="mt-4 flex items-center gap-2 text-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300">
         <span className="text-sm font-medium">Ver detalhes</span>
         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -65,7 +51,6 @@ interface PlanData {
 export const Plans: React.FC = () => {
   const [selectedPlan, setSelectedPlan] = useState<PlanData | null>(null);
 
-  // Dados detalhados dos planos
   const plansData: Record<string, PlanData> = {
     'Padrão 1': {
       title: 'Plano Padrão 1',
@@ -296,7 +281,6 @@ export const Plans: React.FC = () => {
 
   return (
     <section id="planos" className="relative py-20 md:py-32">
-      {/* Fundo escuro sem blur nas bordas */}
       <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" />
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -317,7 +301,8 @@ export const Plans: React.FC = () => {
           </p>
         </motion.div>
 
-        {/* Planos Padrão */}
+        <InvestmentCalculator />
+
         <div className="mb-16">
           <motion.h3
             initial={{ opacity: 0, x: -50 }}
@@ -330,7 +315,7 @@ export const Plans: React.FC = () => {
           </motion.h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {padrao.map((plan, index) => (
-              <PlanCard 
+              <SimplePlanCard 
                 key={plan.title} 
                 {...plan} 
                 delay={index * 0.1}
@@ -340,7 +325,6 @@ export const Plans: React.FC = () => {
           </div>
         </div>
 
-        {/* Looping Prata */}
         <div className="mb-16">
           <motion.h3
             initial={{ opacity: 0, x: -50 }}
@@ -353,7 +337,7 @@ export const Plans: React.FC = () => {
           </motion.h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {prata.map((plan, index) => (
-              <PlanCard 
+              <SimplePlanCard 
                 key={plan.title} 
                 {...plan} 
                 delay={index * 0.1}
@@ -363,7 +347,6 @@ export const Plans: React.FC = () => {
           </div>
         </div>
 
-        {/* Looping Ouro */}
         <div>
           <motion.h3
             initial={{ opacity: 0, x: -50 }}
@@ -376,7 +359,7 @@ export const Plans: React.FC = () => {
           </motion.h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {ouro.map((plan, index) => (
-              <PlanCard 
+              <SimplePlanCard 
                 key={plan.title} 
                 {...plan} 
                 delay={index * 0.1}
@@ -387,7 +370,6 @@ export const Plans: React.FC = () => {
         </div>
       </div>
 
-      {/* Modal */}
       {selectedPlan && (
         <PlanModal
           isOpen={!!selectedPlan}
