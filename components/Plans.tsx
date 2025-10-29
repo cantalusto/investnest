@@ -295,7 +295,7 @@ export const Plans: React.FC = () => {
             Planos de <span className="text-primary">investimento</span>
           </h2>
           <p className="text-gray-300 text-lg">
-            Todos os planos são executados automaticamente via contrato inteligente,
+            Todos os planos são executados automaticamente via contrato inteligente,{' '}
             <br className="hidden md:block" />
             com ciclos e rendimentos proporcionais ao valor investido.
           </p>
