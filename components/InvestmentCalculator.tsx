@@ -6,8 +6,28 @@ import { PlanModal } from './PlanModal';
 
 const InvestmentCalculator: React.FC = () => {
   const [amount, setAmount] = useState<string>('');
+  const [displayAmount, setDisplayAmount] = useState<string>('');
   const [days, setDays] = useState<string>('30');
   const [result, setResult] = useState<{ total: number; profit: number; rate: number; planName: string } | null>(null);
+
+  // Função para formatar o valor enquanto digita
+  const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    
+    // Remove tudo que não é número
+    const numericValue = value.replace(/\D/g, '');
+    
+    // Armazena o valor numérico puro
+    setAmount(numericValue);
+    
+    // Formata para exibição (adiciona pontos de milhar)
+    if (numericValue) {
+      const formatted = Number(numericValue).toLocaleString('pt-BR');
+      setDisplayAmount(formatted);
+    } else {
+      setDisplayAmount('');
+    }
+  };
 
   const calculateInvestment = () => {
     const value = parseFloat(amount);
@@ -25,7 +45,7 @@ const InvestmentCalculator: React.FC = () => {
     // Determinar tipo de plano baseado no período
     if (period >= 360) {
       planType = 'Ouro';
-      // Looping Ouro - 360 dias
+      // Looping Ouro - 360 dias (1 ciclo de 360 dias = rendimento total do período)
       if (value >= 100 && value < 5000) {
         rate = 1.768; // 176.8% por ciclo de 360 dias
         planName = 'Looping Ouro 1';
@@ -38,7 +58,7 @@ const InvestmentCalculator: React.FC = () => {
       }
     } else if (period >= 180) {
       planType = 'Prata';
-      // Looping Prata - 180 dias
+      // Looping Prata - 180 dias (1 ciclo de 180 dias = rendimento total do período)
       if (value >= 100 && value < 5000) {
         rate = 0.77; // 77% por ciclo de 180 dias
         planName = 'Looping Prata 1';
@@ -64,9 +84,21 @@ const InvestmentCalculator: React.FC = () => {
       }
     }
 
-    const cycles = Math.floor(period / 30);
-    const totalAmount = value * Math.pow(1 + rate, cycles);
-    const profit = totalAmount - value;
+    // Para planos de 180 e 360 dias, o ciclo é o próprio período
+    // Para plano de 30 dias, pode ter múltiplos ciclos
+    let totalAmount;
+    let profit;
+    
+    if (period >= 180) {
+      // Para Prata e Ouro: aplica a taxa uma única vez (1 ciclo completo)
+      totalAmount = value * (1 + rate);
+      profit = totalAmount - value;
+    } else {
+      // Para Padrão: pode ter múltiplos ciclos de 30 dias
+      const cycles = Math.floor(period / 30);
+      totalAmount = value * Math.pow(1 + rate, cycles);
+      profit = totalAmount - value;
+    }
 
     setResult({
       total: totalAmount,
@@ -106,11 +138,10 @@ const InvestmentCalculator: React.FC = () => {
           <div className="relative">
             <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">R$</span>
             <input
-              type="number"
-              value={amount}
-              onChange={(e) => setAmount(e.target.value)}
-              placeholder="0,00"
-              min="100"
+              type="text"
+              value={displayAmount}
+              onChange={handleAmountChange}
+              placeholder="0"
               className="w-full bg-zinc-900/50 border border-primary/30 rounded-lg pl-10 pr-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-primary transition-colors"
             />
           </div>
@@ -118,17 +149,24 @@ const InvestmentCalculator: React.FC = () => {
 
         <div>
           <label className="block text-sm font-medium text-gray-300 mb-2">
-            Período (dias)
+            Período do Investimento
           </label>
-          <input
-            type="number"
-            value={days}
-            onChange={(e) => setDays(e.target.value)}
-            placeholder="30"
-            min="30"
-            step="30"
-            className="w-full bg-zinc-900/50 border border-primary/30 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-primary transition-colors"
-          />
+          <div className="relative">
+            <select
+              value={days}
+              onChange={(e) => setDays(e.target.value)}
+              className="w-full bg-zinc-900/50 border border-primary/30 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-primary transition-colors appearance-none cursor-pointer"
+            >
+              <option value="30" className="bg-zinc-900 text-white">30 dias - Plano Padrão</option>
+              <option value="180" className="bg-zinc-900 text-white">180 dias - Looping Prata</option>
+              <option value="360" className="bg-zinc-900 text-white">360 dias - Looping Ouro</option>
+            </select>
+            <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
+              <svg className="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            </div>
+          </div>
         </div>
       </div>
 
