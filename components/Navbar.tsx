@@ -178,8 +178,8 @@ export const Navbar: React.FC = () => {
                 className="w-10 h-10"
                 priority
               />
-              <span className="font-baumans text-primary text-2xl">
-                InvestNest
+              <span className="font-baumans text-2xl">
+                <span className="text-white">Invest</span><span className="text-primary">Nest</span>
               </span>
             </a>
           </div>
@@ -232,8 +232,8 @@ export const Navbar: React.FC = () => {
                 className="w-10 h-10"
                 priority
               />
-              <span className="font-baumans text-primary text-xl">
-                InvestNest
+              <span className="font-baumans text-xl">
+                <span className="text-white">Invest</span><span className="text-primary">Nest</span>
               </span>
             </a>
 

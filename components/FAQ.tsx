@@ -12,7 +12,7 @@ interface FAQItemProps {
 const FAQItem: React.FC<FAQItemProps> = ({ question, answer, index }) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  // Função para renderizar texto com InvestNest em Baumans
+  // Função para renderizar texto com InvestNest em Baumans (Invest branco, Nest verde)
   const renderTextWithBrand = (text: string) => {
     const parts = text.split('InvestNest');
     if (parts.length === 1) return text;
@@ -21,7 +21,10 @@ const FAQItem: React.FC<FAQItemProps> = ({ question, answer, index }) => {
       <React.Fragment key={i}>
         {part}
         {i < parts.length - 1 && (
-          <span className="font-baumans">InvestNest</span>
+          <span className="font-baumans">
+            <span className="text-white">Invest</span>
+            <span className="text-primary">Nest</span>
+          </span>
         )}
       </React.Fragment>
     ));

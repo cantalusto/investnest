@@ -23,7 +23,7 @@ export const About: React.FC = () => {
           className="text-center"
         >
           <h2 className="text-3xl md:text-5xl font-bold mb-12">
-            Sobre a <span className="text-primary font-baumans">InvestNest</span>
+            Sobre a <span className="font-baumans"><span className="text-white">Invest</span><span className="text-primary">Nest</span></span>
           </h2>
 
           <motion.div
@@ -35,7 +35,7 @@ export const About: React.FC = () => {
           >
             <div className="space-y-6 text-gray-300 text-lg leading-relaxed">
               <p>
-                A <span className="text-primary font-semibold font-baumans">InvestNest</span> é uma plataforma de tecnologia financeira voltada à inovação no
+                A <span className="font-semibold font-baumans"><span className="text-white">Invest</span><span className="text-primary">Nest</span></span> é uma plataforma de tecnologia financeira voltada à inovação no
                 mercado de investimentos descentralizados (DeFi).
               </p>
 
